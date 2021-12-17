@@ -1,10 +1,10 @@
 /* ==UserStyle==
 @name           Customizable YouTube
 @namespace      github.com/blyad2137/customizable-youtube
-@version        1.0.0
+@version        1.0.1
 @description    `Customizable Theme for YouTube`
 @author         blyad (https://github.com/blyad2137)
-@license		CC BY-NC-SA 4.0
+@license	CC BY-NC-SA 4.0
 @homepageURL    https://github.com/blyad2137/customizable-youtube
 @supportURL     https://github.com/blyad2137/customizable-youtube/issues
 @updateURL      https://userstyles.world/api/style/2337.user.css
@@ -40,7 +40,13 @@
 				text-shadow: 1px 1px 1px #000000b8 !important;	
 			}EOT;
 		2. "OFF" <<<EOT EOT;
-
+}
+@advanced dropdown svg-shadow "SVG Shadow" {
+		1. "ON" <<<EOT
+			yt-icon svg {
+				filter: drop-shadow(1px 1px 1px #0000008b);
+			}EOT;
+		2. "OFF" <<<EOT EOT;
 }
 @advanced dropdown bigger-theater "Bigger Theater Mode" {
 		1. "ON" <<<EOT
@@ -63,10 +69,10 @@
 			ytd-toggle-button-renderer.style-text[is-icon-button]:nth-of-type(1) {
 				color: #0f0;
 			}
-			#return-youtube-dislike-bar {
+			#return-youtube-dislike-bar, #ryd-bar {
 				background-color: #0f0;
 			}
-			#return-youtube-dislike-bar-container {
+			#return-youtube-dislike-bar-container, #ryd-bar-container {
 				background-color: #f00;
 			}EOT;
 		2. "Version 2" <<<EOT
@@ -76,13 +82,14 @@
 			ytd-toggle-button-renderer.style-default-active[is-icon-button][system-icons]:nth-of-type(2) {
 				color: #f00;
 			}
-			#return-youtube-dislike-bar {
+			#return-youtube-dislike-bar, #ryd-bar {
 				background-color: #0f0;
 			}
-			#return-youtube-dislike-bar-container {
+			#return-youtube-dislike-bar-container, #ryd-bar-container {
 				background-color: #f00;
 			}EOT;
-}				
+		3. "OFF" <<<EOT EOT;
+}	
 		
 }
 
@@ -109,6 +116,26 @@
 			} EOT;
 		2. "OFF" <<<EOT EOT;
 }
+@advanced dropdown yt-logo "YouTube Logo:" {
+		1. "Christmas Themed" <<<EOT
+				yt-icon.ytd-topbar-logo-renderer {
+					background-image: url('https://i.imgur.com/KabWDVK.png');
+					background-size: 3.5em;
+					background-position: center;
+					background-position-y: 1.2em;
+					background-position-x: 1.2em;
+					background-repeat: no-repeat;
+				}EOT;
+		2. "Default" <<<EOT 	
+				yt-icon.ytd-topbar-logo-renderer {
+					background-image: url('https://static.wikia.nocookie.net/shipping/images/c/c0/YouTube.png');
+					background-size: 2.8em;
+					background-position: center;
+					background-position-y: 1.8em;
+					background-position-x: 1.7em;
+					background-repeat: no-repeat;
+				} EOT;
+}
 ==/UserStyle== */
 
 @-moz-document regexp("^(https?)://(www).youtube.*") {
@@ -130,6 +157,7 @@
 		--ytd-searchbox-legacy-button-border-color: var(--ytd-searchbox-legacy-border-color);
 		--yt-spec-call-to-action: /*[[link-color]]*/;
 		--yt-live-chat-moderator-color: /*[[mod-color]]*/;
+		--yt-spec-themed-blue: /*[[link-color]]*/;
 	}
 	
 	ytd-watch-flexy[flexy][is-two-columns_] #columns.ytd-watch-flexy {
@@ -167,7 +195,7 @@
 	.ytp-popup {
 		background-color: rgba(var(--bg-secondary-color),/*[[bg-opacity]]*/);
 	}
-	ytd-masthead, #chips-wrapper.ytd-feed-filter-chip-bar-renderer, ytd-multi-page-menu-renderer, .ytp-panel-menu, ytd-mini-guide-renderer, tp-yt-paper-listbox {
+	ytd-masthead, #chips-wrapper.ytd-feed-filter-chip-bar-renderer, ytd-multi-page-menu-renderer, .ytp-popup, ytd-mini-guide-renderer, tp-yt-paper-dialog, #scroll-button-forward.yt-third-party-share-target-section-renderer button, #scroll-button-back.yt-third-party-share-target-section-renderer button {
 		backdrop-filter: blur(var(--bg-blur));
 		-webkit-backdrop-filter: blur(var(--bg-blur));
 	}
@@ -226,10 +254,10 @@
 	.gsfs {
 		color: #ddd;
 	}
-	.gsfs:hover {
+	.gsfs:hover, .sbsb_d {
 		background-color: var(--yt-spec-badge-chip-background);
 	}
-	.sbsb_i {
+	.sbsb_i, a.ytp-ce-link, a.ytp-ce-link:visited {
 		color: var(--yt-spec-call-to-action);
 	}
 	.sbpqs_a {
@@ -238,11 +266,40 @@
 	.sbfl_a {
 		color: #aaa;
 	}
+	ytd-tvfilm-offer-module-renderer {
+		position: relative;
+	}
+	.ytp-ce-expanding-overlay-background {
+		background-color: var(--yt-spec-brand-background-primary);
+		backdrop-filter: blur(var(--bg-blur));
+		-webkit-backdrop-filter: blur(var(--bg-blur));
+	}
+	.ytp-ce-channel-this .ytp-ce-channel-metadata {
+		border-color: var(--ytd-searchbox-legacy-border-color);
+	}
+	.yt-ui-ellipsis {
+		background-color: transparent;
+	}
+	.ytp-ce-channel-metadata, .ytp-ce-website-metadata, .ytp-ce-merchandise-metadata, .ytp-ce-merchandise-price-container {
+		color: #969696;
+	}
+	.ytp-sb-unsubscribe {
+		background-color: var(--yt-spec-badge-chip-background);
+		color: rgba(238, 238, 238, .6);
+	}
+	.ytp-ce-website-title, .ytp-ce-merchandise-title {
+		color: #ccc;
+	}
+	yt-icon.ytd-topbar-logo-renderer svg > g > g:nth-of-type(1) path {
+		visibility: hidden;
+	}
 	
 	
+	/*[[yt-logo]]*/
 	/*[[bd-effect]]*/
 	/*[[bigger-theater]]*/
 	/*[[text-shadow]]*/
 	/*[[dl-ratio]]*/
+	/*[[svg-shadow]]*/
 	
 }
