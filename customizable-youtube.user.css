@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Customizable YouTube
 @namespace      github.com/blyad2137/customizable-youtube
-@version        1.0.1
+@version        1.0.2
 @description    `Customizable Theme for YouTube`
 @author         blyad (https://github.com/blyad2137)
 @license	CC BY-NC-SA 4.0
@@ -15,6 +15,7 @@
 
 @advanced color link-color "Link Color:" #ff3e3e
 @advanced color mod-color "Moderator Color:" #f15e5e
+@advanced color sponsor-color "Sponsor Color:" #2ba640
 
 @advanced text custom-image "URL to a image" url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/745af01a-5d51-441b-9c45-a8feda5f195c/dcec1z4-fb6cca7b-27bd-49e6-b530-65b537f9c91a.jpg')
 @advanced dropdown bg-attachment "Background image type" {
@@ -136,6 +137,18 @@
 					background-repeat: no-repeat;
 				} EOT;
 }
+@advanced dropdown yt-posts "YouTube Posts:" {
+		1. "Show" <<<EOT EOT;
+		2. "Hide" <<<EOT ytd-rich-section-renderer[align-within-rich-grid] {display: none !important; z-index: -9999 !important;} EOT;
+}
+@advanced dropdown yt-filters "YouTube Filters:" {
+		1. "Show" <<<EOT EOT;
+		2. "Hide" <<<EOT ytd-feed-filter-chip-bar-renderer {display: none !important; z-index: -9999 !important;} #contents.ytd-rich-grid-renderer {margin-top: 0;} EOT;
+}
+@advanced dropdown yt-surveys "Youtube Surveys:" {
+		1. "Show" <<<EOT EOT;
+		2. "Hide" <<<EOT ytd-inline-survey-renderer {display: none !important; z-index: -9999 !important;} EOT;
+}
 ==/UserStyle== */
 
 @-moz-document regexp("^(https?)://(www).youtube.*") {
@@ -158,6 +171,9 @@
 		--yt-spec-call-to-action: /*[[link-color]]*/;
 		--yt-live-chat-moderator-color: /*[[mod-color]]*/;
 		--yt-spec-themed-blue: /*[[link-color]]*/;
+		--yt-live-chat-sponsor-color: /*[[sponsor-color]]*/;
+		--yt-live-chat-mode-change-background-color: rgba(var(--bg-secondary-color), calc(/*[[bg-opacity]]*/ + 15%));
+		
 	}
 	
 	ytd-watch-flexy[flexy][is-two-columns_] #columns.ytd-watch-flexy {
@@ -195,7 +211,7 @@
 	.ytp-popup {
 		background-color: rgba(var(--bg-secondary-color),/*[[bg-opacity]]*/);
 	}
-	ytd-masthead, #chips-wrapper.ytd-feed-filter-chip-bar-renderer, ytd-multi-page-menu-renderer, .ytp-popup, ytd-mini-guide-renderer, tp-yt-paper-dialog, #scroll-button-forward.yt-third-party-share-target-section-renderer button, #scroll-button-back.yt-third-party-share-target-section-renderer button {
+	ytd-masthead, #chips-wrapper.ytd-feed-filter-chip-bar-renderer, ytd-multi-page-menu-renderer, .ytp-popup, ytd-mini-guide-renderer, tp-yt-paper-dialog, #scroll-button-forward.yt-third-party-share-target-section-renderer button, #scroll-button-back.yt-third-party-share-target-section-renderer button, tp-yt-paper-listbox.yt-dropdown-menu {
 		backdrop-filter: blur(var(--bg-blur));
 		-webkit-backdrop-filter: blur(var(--bg-blur));
 	}
@@ -204,7 +220,7 @@
 		backdrop-filter: blur(var(--bg-blur));
 		-webkit-backdrop-filter: blur(var(--bg-blur));
 	}
-	ytd-donation-shelf-renderer, ytd-browse[page-subtype=channels] {
+	ytd-donation-shelf-renderer, ytd-browse[page-subtype=channels], ytd-engagement-panel-section-list-renderer {
 		position: relative;
 	}
 	ytd-browse[page-subtype=channels]::before {
@@ -266,7 +282,7 @@
 	.sbfl_a {
 		color: #aaa;
 	}
-	ytd-tvfilm-offer-module-renderer {
+	ytd-tvfilm-offer-module-renderer, ytd-playlist-panel-renderer {
 		position: relative;
 	}
 	.ytp-ce-expanding-overlay-background {
@@ -280,7 +296,7 @@
 	.yt-ui-ellipsis {
 		background-color: transparent;
 	}
-	.ytp-ce-channel-metadata, .ytp-ce-website-metadata, .ytp-ce-merchandise-metadata, .ytp-ce-merchandise-price-container {
+	.ytp-ce-channel-metadata, .ytp-ce-website-metadata, .ytp-ce-merchandise-metadata, .ytp-ce-merchandise-price-container, .iv-card, .iv-card a.iv-click-target, .iv-card a.iv-click-target:hover, .iv-card a.iv-click-target:focus {
 		color: #969696;
 	}
 	.ytp-sb-unsubscribe {
@@ -293,8 +309,54 @@
 	yt-icon.ytd-topbar-logo-renderer svg > g > g:nth-of-type(1) path {
 		visibility: hidden;
 	}
+	yt-live-chat-membership-item-renderer {
+		--yt-live-chat-sponsor-color: /*[[sponsor-color]]*/;
+		--yt-live-chat-sponsor-header-color: /*[[sponsor-color]]*/;
+	}
+	yt-live-chat-membership-item-renderer[show-only-header] #header.yt-live-chat-membership-item-renderer, #content.yt-live-chat-membership-item-renderer {
+		filter: saturate(60%);
+	}
+	yt-live-chat-membership-item-renderer[show-only-header] #header.yt-live-chat-membership-item-renderer *, #content.yt-live-chat-membership-item-renderer * {
+		filter: saturate(130%);
+	}
+	ytd-menu-popup-renderer tp-yt-paper-listbox {
+		backdrop-filter: blur(var(--bg-blur));
+		-webkit-backdrop-filter: blur(var(--bg-blur));
+	}
+	#header.yt-live-chat-membership-item-renderer {
+		filter: saturate(45%);
+	}
+	#header.yt-live-chat-membership-item-renderer * {
+		filter: saturate(145%);
+	}
+	.ytp-cards-teaser .ytp-cards-teaser-box {
+		background-color: var(--yt-spec-brand-background-secondary);
+		border-color: var(--ytd-searchbox-legacy-border-color);
+		backdrop-filter: blur(var(--bg-blur));
+		-webkit-backdrop-filter: blur(var(--bg-blur));
+	}
+	.ytp-cards-teaser .ytp-cards-teaser-text {
+		color: #fff;
+	}
+	.iv-card h2 {
+		color: #ccc;
+	}
+	.iv-card {
+		background-color: var(--yt-spec-brand-background-secondary);
+		backdrop-filter: blur(var(--bg-blur));
+		-webkit-backdrop-filter: blur(var(--bg-blur));
+	}
+	.iv-card-image, .iv-card-message {
+		border-color: var(--ytd-searchbox-legacy-border-color);
+	}
+	.iv-card:hover .iv-card-primary-link {
+		color: /*[[link-color]]*/ !important;
+	}
 	
 	
+	/*[[yt-surveys]]*/
+	/*[[yt-filters]]*/
+	/*[[yt-posts]]*/
 	/*[[yt-logo]]*/
 	/*[[bd-effect]]*/
 	/*[[bigger-theater]]*/
